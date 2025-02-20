@@ -7,11 +7,11 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class StateService {
+export class DepartmentService {
   constructor(private http: HttpClient) {}
 
   get(): Observable<RootModel> {
-    let url: string = `${environment.apiUrl}/api/HrStates`;
+    let url: string = `${environment.apiUrl}/api/HrDepartments`;
     return this.http.get<RootModel>(url);
   }
 }
