@@ -2,7 +2,7 @@
   <p-table #dt1 [value]="states" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template #caption>
       <div class="flex">
-        <p-button label="Create"></p-button>
+        <p-button label="Create" routerLink="entry"></p-button>
         <p-iconfield iconPosition="left" class="ml-auto">
           <p-inputicon>
             <i class="pi pi-search"></i>
@@ -16,6 +16,7 @@
         <th>StateId</th>
         <th>StateName</th>
         <th>StateNameMm</th>
+        <th>Action</th>
       </tr>
     </ng-template>
     <ng-template #body let-state>
@@ -23,6 +24,10 @@
         <td>{{ state.stateId }}</td>
         <td>{{ state.stateName }}</td>
         <td>{{ state.stateNameMm }}</td>
+        <td>
+          <p-button (onClick)="update(state)">Edit</p-button>
+          <p-button (onClick)="delete(state)">Delete</p-button>
+        </td>
       </tr>
     </ng-template>
   </p-table>

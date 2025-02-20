@@ -13,6 +13,7 @@ export const routes: Routes = [
     path: 'state',
     children: [
       { path: '', component: StateComponent },
+      { path: 'entry/:id', component: EntryComponent },
       { path: 'entry', component: EntryComponent },
     ],
   },

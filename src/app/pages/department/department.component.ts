@@ -7,6 +7,9 @@ import { Table } from 'primeng/table';
 import { TableModule } from 'primeng/table';
 import { departmentModel } from '../../core/models/department.model';
 import { DepartmentService } from '../../core/services/department.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-department',
@@ -16,6 +19,9 @@ import { DepartmentService } from '../../core/services/department.service';
     IconFieldModule,
     InputIconModule,
     InputTextModule,
+    MultiSelectModule,
+    SelectModule,
+    CommonModule,
   ],
   templateUrl: './department.component.html',
   styleUrls: ['./department.component.scss'],
@@ -23,7 +29,6 @@ import { DepartmentService } from '../../core/services/department.service';
 export class DepartmentComponent implements OnInit {
   departments: departmentModel[] = [];
   loading: boolean = true;
-
   constructor(private departmentService: DepartmentService) {}
 
   ngOnInit(): void {
