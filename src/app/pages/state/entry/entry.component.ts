@@ -24,7 +24,7 @@ export class EntryComponent implements OnInit {
   model!: StateModel;
 
   constructor(
-    private stateservice: StateService,
+    private stateService: StateService,
     private route: ActivatedRoute
   ) {}
 
@@ -38,7 +38,7 @@ export class EntryComponent implements OnInit {
   ngOnInit(): void {
     this.stateID = parseInt(this.route.snapshot.paramMap.get('id') ?? '');
     if (this.stateID > 0) {
-      this.stateservice.getById(this.stateID).subscribe((res) => {
+      this.stateService.getById(this.stateID).subscribe((res) => {
         this.model = res.data as StateModel;
         console.log(this.model);
 
@@ -58,11 +58,11 @@ export class EntryComponent implements OnInit {
     };
 
     if (this.stateID > 0) {
-      this.stateservice.update(this.stateID, model).subscribe((res) => {
+      this.stateService.update(this.stateID, model).subscribe((res) => {
         console.log(res);
       });
     } else {
-      this.stateservice.create(model).subscribe((res) => {
+      this.stateService.create(model).subscribe((res) => {
         console.log(res);
       });
     }

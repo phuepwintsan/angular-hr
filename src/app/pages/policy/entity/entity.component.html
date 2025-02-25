@@ -1,0 +1,57 @@
+<div class="p-8">
+  <form [formGroup]="policyForm" (submit)="submit()">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Policy Id</label>
+        <input pInputText formControlName="id" type="number" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Title</label>
+        <input pInputText formControlName="title" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Description</label>
+        <input pInputText formControlName="description" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>policyType</label>
+        <input pInputText formControlName="policyType" type="number" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Company Id</label>
+        <input pInputText formControlName="companyId" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>CreatedOn</label>
+        <input pInputText formControlName="createdOn" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Created By</label>
+        <input pInputText formControlName="createdBy" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Updated On</label>
+        <input pInputText formControlName="updatedOn" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Updated By</label>
+        <input pInputText formControlName="updatedBy" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Deleted On</label>
+        <input pInputText formControlName="deletedOn" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Deleted By</label>
+        <input pInputText formControlName="deletedBy" type="text" />
+      </div>
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Remark</label>
+        <input pInputText formControlName="remark" type="text" />
+      </div>
+      <div class="col-span-12">
+        <button pButton type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>

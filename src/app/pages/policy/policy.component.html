@@ -1,0 +1,66 @@
+<div class="card">
+  <p-table
+    #dt1
+    [value]="policies"
+    showGridlines
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="flex">
+        <p-button label="Create" routerLink="entity"
+          ><i class="pi pi-plus"></i
+        ></p-button>
+        <p-iconfield iconPosition="left" class="ml-auto">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" placeholder="Search keyword" />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th class="bg-green-300">PolicyId</th>
+        <th class="bg-green-300">Title</th>
+        <th class="bg-green-300">Description</th>
+        <th class="bg-green-300">PolicyType</th>
+        <th class="bg-green-300">CompanyId</th>
+        <th class="bg-green-300">CreatedOn</th>
+        <th class="bg-green-300">CreatedBy</th>
+        <th class="bg-green-300">UpdatedOn</th>
+        <th class="bg-green-300">UpdatedBy</th>
+        <th class="bg-green-300">DeletedOn</th>
+        <th class="bg-green-300">DeletedBy</th>
+        <th class="bg-green-300">remark</th>
+        <th class="bg-green-300">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-policy>
+      <tr>
+        <td>{{ policy.id }}</td>
+        <td>{{ policy.title }}</td>
+        <td>{{ policy.description }}</td>
+        <td>{{ policy.policyType }}</td>
+        <td>{{ policy.companyId }}</td>
+        <td>{{ policy.createdOn }}</td>
+        <td>{{ policy.createdBy }}</td>
+        <td>{{ policy.updatedOn }}</td>
+        <td>{{ policy.updatedBy }}</td>
+        <td>{{ policy.deletedOn }}</td>
+        <td>{{ policy.deletedBy }}</td>
+        <td>{{ policy.remark }}</td>
+        <td class="flex flex-row gap-2">
+          <p-button (onClick)="update(policy)"
+            ><i class="pi pi-user-edit"></i>Edit</p-button
+          >
+          <p-button (onClick)="delete(policy)"
+            ><i class="pi pi-times"></i>Delete</p-button
+          >
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

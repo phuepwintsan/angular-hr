@@ -4,6 +4,7 @@
 @layer tailwind-base {
   @tailwind base;
 }
+@import "primeicons/primeicons.css";
 
 @layer tailwind-utilities {
   @tailwind components;
