@@ -8,6 +8,8 @@ import { AllowanceService } from '../../core/services/allowance.service';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { Router, RouterModule } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-allowance',
@@ -21,6 +23,12 @@ import { Router, RouterModule } from '@angular/router';
     ButtonModule,
     CommonModule,
     TagModule,
+    TableModule,
+    CommonModule,
+    CardModule,
+    TagModule,
+    ButtonModule,
+    RippleModule,
   ],
   templateUrl: './allowance.component.html',
   styleUrl: './allowance.component.scss',
@@ -61,8 +69,8 @@ export class AllowanceComponent implements OnInit {
     ]);
   }
 
-  delete(policy: AllowanceModel): void {
-    this.selectedAllowance = policy;
+  delete(allowance: AllowanceModel): void {
+    this.selectedAllowance = allowance;
     if (this.selectedAllowance != null) {
       this.allowanceService
         .delete(this.selectedAllowance.allowanceId)

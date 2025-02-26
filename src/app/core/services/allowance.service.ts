@@ -17,7 +17,7 @@ export class AllowanceService {
   }
 
   create(model: AllowanceModel): Observable<RootModel> {
-    let url: string = `${environment.apiUrl}/api/HrAllowances`;
+    const url: string = `${environment.apiUrl}/api/HrAllowances`;
     return this.http.post<RootModel>(url, JSON.stringify(model), {
       headers: {
         'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+<p-toast key="globalMessage"></p-toast>
 <div class="p-8">
   <form [formGroup]="allowanceForm" (submit)="submit()">
     <div class="grid grid-cols-12 gap-2">
@@ -8,18 +9,54 @@
       <div class="col-span-12 flex flex-col gap-2">
         <label>Company Id</label>
         <input pInputText formControlName="companyId" type="text" />
+        <small
+          *ngIf="
+            allowanceForm.controls['companyId'].invalid &&
+            allowanceForm.get('companyId')?.dirty
+          "
+          class="p-text"
+        >
+          Branch Is Required.
+        </small>
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Branch Id</label>
         <input pInputText formControlName="branchId" type="number" />
+        <small
+          *ngIf="
+            allowanceForm.controls['branchId'].invalid &&
+            allowanceForm.get('branchId')?.dirty
+          "
+          class="p-text"
+        >
+          Branch Is Required.
+        </small>
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Dept Id</label>
         <input pInputText formControlName="deptId" type="number" />
+        <small
+          *ngIf="
+            allowanceForm.controls['deptId'].invalid &&
+            allowanceForm.get('deptId')?.dirty
+          "
+          class="p-text"
+        >
+          Department Is Required.
+        </small>
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Position Id</label>
         <input pInputText formControlName="positionId" type="number" />
+        <small
+          *ngIf="
+            allowanceForm.controls['positionId'].invalid &&
+            allowanceForm.get('positionId')?.dirty
+          "
+          class="p-text"
+        >
+          Position Is Required.
+        </small>
       </div>
 
       <div class="col-span-12 flex flex-col gap-2">
@@ -32,10 +69,10 @@
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Status</label>
-        <input pInputText formControlName="status" type="text" />
+        <p-toggleswitch formControlName="status" />
       </div>
 
-      <div class="col-span-12 flex flex-col gap-2">
+      <!-- <div class="col-span-12 flex flex-col gap-2">
         <label>Created On</label>
         <input pInputText formControlName="createdOn" type="text" />
       </div>
@@ -62,7 +99,7 @@
       <div class="col-span-12 flex flex-col gap-2">
         <label>Remark</label>
         <input pInputText formControlName="remark" type="text" />
-      </div>
+      </div> -->
       <div class="col-span-12">
         <button pButton type="submit">Submit</button>
       </div>

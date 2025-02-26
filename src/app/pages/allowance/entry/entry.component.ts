@@ -3,9 +3,19 @@ import { AllowanceModel } from '../../../core/models/allowance.model';
 import { AllowanceService } from '../../../core/services/allowance.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { MessageService } from 'primeng/api';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-entry',
@@ -15,9 +25,13 @@ import { ButtonModule } from 'primeng/button';
     ReactiveFormsModule,
     InputTextModule,
     ButtonModule,
+    ToastModule,
+    ToggleSwitchModule,
+    ToggleSwitch,
   ],
   providers: [
-    DatePipe, // ✅ Added here
+    DatePipe,
+    MessageService, // ✅ Added here
   ],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.scss',
@@ -25,20 +39,25 @@ import { ButtonModule } from 'primeng/button';
 export class EntryComponent implements OnInit {
   allowanceId: number = 0;
   model!: AllowanceModel;
+  isEdit: boolean = false;
+  isSubmitting: boolean = false;
+  modalVisible: boolean = false;
+  checked: boolean = false;
 
   constructor(
     private allowanceService: AllowanceService,
     private route: ActivatedRoute,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private messageService: MessageService
   ) {}
 
   private formBuilder = inject(FormBuilder);
   allowanceForm = this.formBuilder.group({
-    allowanceId: [0],
-    companyId: [''],
-    branchId: [0],
-    deptId: [0],
-    positionId: [0],
+    allowanceId: [0, Validators.required],
+    companyId: ['', Validators.required],
+    branchId: [0, Validators.required],
+    deptId: [0, Validators.required],
+    positionId: [0, Validators.required],
     allowanceName: [''],
     description: [''],
     status: [true],
@@ -54,6 +73,7 @@ export class EntryComponent implements OnInit {
   ngOnInit(): void {
     this.allowanceId = parseInt(this.route.snapshot.paramMap.get('id') ?? '');
     if (this.allowanceId > 0) {
+      this.isEdit = true;
       this.allowanceService.getById(this.allowanceId).subscribe((res) => {
         this.model = res.data as AllowanceModel;
         console.log(this.model);
@@ -100,45 +120,101 @@ export class EntryComponent implements OnInit {
   }
 
   submit(): void {
-    let createdOn = this.datepipe.transform(
-      this.allowanceForm.controls.createdOn.value,
-      'yyyy-MM-dd'
-    );
+    console.log('Form Submitted:', this.allowanceForm.value);
+    if (this.allowanceForm.valid) {
+      let createdOn = this.datepipe.transform(
+        this.allowanceForm.controls.createdOn.value,
+        'yyyy-MM-dd'
+      );
 
-    let updatedOn = this.datepipe.transform(
-      this.allowanceForm.controls.updatedOn.value,
-      'yyyy-MM-dd'
-    );
+      let updatedOn = this.datepipe.transform(
+        this.allowanceForm.controls.updatedOn.value,
+        'yyyy-MM-dd'
+      );
 
-    let deletedOn = this.datepipe.transform(
-      this.allowanceForm.controls.deletedOn.value,
-      'yyyy-MM-dd'
-    );
-    var model: AllowanceModel = {
-      allowanceId: this.allowanceForm.controls.allowanceId.value ?? 0,
-      companyId: this.allowanceForm.controls.companyId.value ?? '',
-      branchId: this.allowanceForm.controls.branchId.value ?? 0,
-      deptId: this.allowanceForm.controls.deptId.value ?? 0,
-      positionId: this.allowanceForm.controls.positionId.value ?? 0,
-      allowanceName: this.allowanceForm.controls.allowanceName.value ?? '',
-      description: this.allowanceForm.controls.description.value ?? '',
-      status: this.allowanceForm.controls.status.value ?? true,
-      createdOn: createdOn,
-      createdBy: this.allowanceForm.controls.createdBy.value ?? '',
-      updatedOn: updatedOn,
-      updatedBy: this.allowanceForm.controls.updatedOn.value ?? '',
-      deletedOn: deletedOn,
-      deletedBy: this.allowanceForm.controls.deletedOn.value ?? '',
-      remark: this.allowanceForm.controls.deletedBy.value ?? '',
-    };
+      let deletedOn = this.datepipe.transform(
+        this.allowanceForm.controls.deletedOn.value,
+        'yyyy-MM-dd'
+      );
 
-    if (this.allowanceId > 0) {
-      this.allowanceService.update(this.allowanceId, model).subscribe((res) => {
-        console.log(res);
-      });
+      var model: AllowanceModel = {
+        allowanceId: this.allowanceForm.controls.allowanceId.value ?? 0,
+        companyId: this.allowanceForm.controls.companyId.value ?? '',
+        branchId: this.allowanceForm.controls.branchId.value ?? 0,
+        deptId: this.allowanceForm.controls.deptId.value ?? 0,
+        positionId: this.allowanceForm.controls.positionId.value ?? 0,
+        allowanceName: this.allowanceForm.controls.allowanceName.value ?? '',
+        description: this.allowanceForm.controls.description.value ?? '',
+        status: this.allowanceForm.controls.status.value ?? true,
+        createdOn: createdOn,
+        createdBy: this.allowanceForm.controls.createdBy.value ?? '',
+        updatedOn: updatedOn,
+        updatedBy: this.allowanceForm.controls.updatedBy.value ?? '',
+        deletedOn: deletedOn,
+        deletedBy: this.allowanceForm.controls.deletedBy.value ?? '',
+        remark: this.allowanceForm.controls.remark.value ?? '',
+      };
+      if (!this.isEdit) {
+        model.allowanceId = 0;
+        model.createdOn = this.datepipe.transform(
+          new Date(),
+          'yyyy-MM-ddTHH:mm:ss'
+        );
+        model.createdBy = 'Admin';
+
+        this.isSubmitting = true;
+        this.allowanceService.create(model).subscribe({
+          next: (res) => {
+            console.log('API Response:', res);
+            if (res.success) {
+              this.modalVisible = false;
+
+              this.messageService.add({
+                key: 'globalMessage',
+                severity: 'info',
+                summary: 'Success',
+                detail: res.message.toString(),
+              });
+
+              this.isSubmitting = false;
+            }
+          },
+          error: (err) => {
+            this.isSubmitting = false;
+            console.error('Error:', err);
+          },
+        });
+      } else {
+        model.updatedOn = this.datepipe.transform(
+          new Date(),
+          'yyyy-MM-ddTHH:mm:ss'
+        );
+        model.updatedBy = 'Admin';
+
+        this.allowanceService.update(this.allowanceId, model).subscribe({
+          next: (res) => {
+            console.log('API Response:', res);
+            if (res.success) {
+              this.modalVisible = false;
+
+              this.messageService.add({
+                key: 'globalMessage',
+                severity: 'info',
+                summary: 'Success',
+                detail: res.message.toString(),
+              });
+            }
+          },
+          error: (err) => {
+            this.isSubmitting = false;
+            console.error('Error:', err);
+          },
+        });
+      }
     } else {
-      this.allowanceService.create(model).subscribe((res) => {
-        console.log(res);
+      Object.keys(this.allowanceForm.controls).forEach((field) => {
+        const control = this.allowanceForm.get(field);
+        control?.markAsDirty({ onlySelf: true });
       });
     }
   }
