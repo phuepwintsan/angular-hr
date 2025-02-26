@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AllowanceModel } from '../../../core/models/allowance.model';
 import { AllowanceService } from '../../../core/services/allowance.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import {
   FormBuilder,
@@ -9,6 +9,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
   Validators,
+  FormGroup,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -16,10 +17,14 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { MessageService } from 'primeng/api';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Router } from '@angular/router';
+import { Editor } from 'primeng/editor';
 
 @Component({
   selector: 'app-entry',
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -28,6 +33,8 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
     ToastModule,
     ToggleSwitchModule,
     ToggleSwitch,
+    ProgressSpinnerModule,
+    Editor,
   ],
   providers: [
     DatePipe,
@@ -43,12 +50,15 @@ export class EntryComponent implements OnInit {
   isSubmitting: boolean = false;
   modalVisible: boolean = false;
   checked: boolean = false;
+  loading: boolean = false;
+  // formGroup: FormGroup | undefined;
 
   constructor(
     private allowanceService: AllowanceService,
     private route: ActivatedRoute,
     private datepipe: DatePipe,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   private formBuilder = inject(FormBuilder);
@@ -74,6 +84,10 @@ export class EntryComponent implements OnInit {
     this.allowanceId = parseInt(this.route.snapshot.paramMap.get('id') ?? '');
     if (this.allowanceId > 0) {
       this.isEdit = true;
+      this.loading = true;
+      // this.formGroup = new FormGroup({
+      //   text: new FormControl(),
+      // });
       this.allowanceService.getById(this.allowanceId).subscribe((res) => {
         this.model = res.data as AllowanceModel;
         console.log(this.model);
@@ -93,6 +107,7 @@ export class EntryComponent implements OnInit {
         this.allowanceForm.controls.description.setValue(
           this.model.description
         );
+
         this.allowanceForm.controls.status.setValue(this.model.status);
         this.allowanceForm.controls.createdOn.setValue(
           this.model.createdOn
@@ -163,6 +178,7 @@ export class EntryComponent implements OnInit {
         model.createdBy = 'Admin';
 
         this.isSubmitting = true;
+        this.loading = true;
         this.allowanceService.create(model).subscribe({
           next: (res) => {
             console.log('API Response:', res);
@@ -175,21 +191,26 @@ export class EntryComponent implements OnInit {
                 summary: 'Success',
                 detail: res.message.toString(),
               });
-
-              this.isSubmitting = false;
+              this.loading = false;
+              setTimeout(() => {
+                this.router.navigate(['/allowance']);
+              }, 2000);
             }
           },
           error: (err) => {
             this.isSubmitting = false;
             console.error('Error:', err);
           },
+          complete: () => {
+            this.loading = false;
+          },
         });
       } else {
-        model.updatedOn = this.datepipe.transform(
-          new Date(),
-          'yyyy-MM-ddTHH:mm:ss'
-        );
-        model.updatedBy = 'Admin';
+        // model.updatedOn = this.datepipe.transform(
+        //   new Date(),
+        //   'yyyy-MM-ddTHH:mm:ss'
+        // );
+        // model.updatedBy = 'Admin'; if you want to assign in vs code
 
         this.allowanceService.update(this.allowanceId, model).subscribe({
           next: (res) => {
@@ -203,6 +224,10 @@ export class EntryComponent implements OnInit {
                 summary: 'Success',
                 detail: res.message.toString(),
               });
+              this.loading = false;
+              setTimeout(() => {
+                this.router.navigate(['/allowance']);
+              }, 2000);
             }
           },
           error: (err) => {

@@ -65,7 +65,7 @@
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Description</label>
-        <input pInputText formControlName="description" type="text" />
+        <p-editor formControlName="description" [style]="{ height: '320px' }" />
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Status</label>
@@ -101,7 +101,16 @@
         <input pInputText formControlName="remark" type="text" />
       </div> -->
       <div class="col-span-12">
-        <button pButton type="submit">Submit</button>
+        <button
+          pButton
+          type="submit"
+          icon="pi pi-check"
+          [disabled]="isSubmitting"
+          [loading]="isSubmitting"
+          class="w-24"
+        >
+          Submit
+        </button>
       </div>
     </div>
   </form>

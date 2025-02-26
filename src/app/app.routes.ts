@@ -35,6 +35,8 @@ export const routes: Routes = [
       { path: '', component: AllowanceComponent },
       { path: 'entry/:id', component: AllowanceEntryComponent },
       { path: 'entry', component: AllowanceEntryComponent },
+      { path: 'allowance/entry', component: EntryComponent },
+      { path: '', redirectTo: 'allowance', pathMatch: 'full' },
     ],
   },
 ];
