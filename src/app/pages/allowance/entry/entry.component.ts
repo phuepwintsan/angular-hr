@@ -20,6 +20,8 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
 import { Editor } from 'primeng/editor';
+import { Dialog } from 'primeng/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-entry',
@@ -35,6 +37,7 @@ import { Editor } from 'primeng/editor';
     ToggleSwitch,
     ProgressSpinnerModule,
     Editor,
+    Dialog,
   ],
   providers: [
     DatePipe,
@@ -51,14 +54,18 @@ export class EntryComponent implements OnInit {
   modalVisible: boolean = false;
   checked: boolean = false;
   loading: boolean = false;
+  visible: boolean = false;
   // formGroup: FormGroup | undefined;
-
+  showDialog() {
+    this.visible = true;
+  }
   constructor(
     private allowanceService: AllowanceService,
     private route: ActivatedRoute,
     private datepipe: DatePipe,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   private formBuilder = inject(FormBuilder);

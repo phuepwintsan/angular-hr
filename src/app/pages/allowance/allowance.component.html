@@ -149,7 +149,9 @@
           <td>{{ allowance.deptId }}</td>
           <td>{{ allowance.positionId }}</td>
           <td>{{ allowance.allowanceName }}</td>
-          <td>{{ allowance.description }}</td>
+          <td>
+            <div [innerHTML]="allowance.description"></div>
+          </td>
           <td>
             <p-tag
               [value]="allowance.status"
