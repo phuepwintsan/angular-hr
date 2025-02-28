@@ -1,4 +1,4 @@
-export interface CompanyModel {
+export interface ViCompanyModel {
   companyId: string;
   companyName: string;
   joinDate: string;
@@ -9,9 +9,11 @@ export interface CompanyModel {
   email: string;
   houseNo: string;
   streetId: number;
-  streetName: null;
+  streetName: string;
   townshipId: number;
+  townshipName: string;
   stateId: number;
+  stateName: string;
   photo: null;
   status: boolean;
   createdOn: string;
@@ -21,7 +23,4 @@ export interface CompanyModel {
   deletedOn: null;
   deletedBy: null;
   remark: null;
-  hrBranches: any[];
-  hrLeaveGroups: any[];
-  hrLoanTypes: any[];
 }

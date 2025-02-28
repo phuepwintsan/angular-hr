@@ -1,4 +1,4 @@
-export interface BranchModel {
+export interface ViBranchModel {
   branchId: number;
   companyId: string;
   branchName: string;

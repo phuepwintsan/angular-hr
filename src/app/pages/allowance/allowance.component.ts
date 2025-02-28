@@ -10,6 +10,9 @@ import { TagModule } from 'primeng/tag';
 import { Router, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { RippleModule } from 'primeng/ripple';
+import { CompanyService } from '../../core/services/company.service';
+import { SelectModule } from 'primeng/select';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-allowance',
@@ -29,6 +32,7 @@ import { RippleModule } from 'primeng/ripple';
     TagModule,
     ButtonModule,
     RippleModule,
+    SelectModule,
   ],
   templateUrl: './allowance.component.html',
   styleUrl: './allowance.component.scss',
@@ -37,8 +41,11 @@ export class AllowanceComponent implements OnInit {
   allowances: AllowanceModel[] = [];
   selectedAllowance!: AllowanceModel;
 
+  allowanceForm: any;
+
   constructor(
     private allowanceService: AllowanceService,
+    private companyService: CompanyService,
     private route: Router
   ) {}
 

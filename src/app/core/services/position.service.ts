@@ -16,6 +16,20 @@ export class PositionService {
     return this.http.get<RootModel>(url);
   }
 
+  getByCBDid(
+    companyId: string,
+    branchId: number,
+    departmentId: number
+  ): Observable<RootModel> {
+    let url: string = `${environment.apiUrl}/api/HrPositions/by-CBDid?companyid=${companyId}?branchid=${branchId}&deptId=${departmentId}`;
+    return this.http.get<RootModel>(url);
+  }
+
+  getByPid(id: number): Observable<RootModel> {
+    let url: string = `${environment.apiUrl}/api/HrPositions/${id}`;
+    return this.http.get<RootModel>(url);
+  }
+
   create(model: PositionModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrPositions`;
     return this.http.post<RootModel>(url, JSON.stringify(model), {
@@ -23,11 +37,6 @@ export class PositionService {
         'Content-Type': 'application/json',
       },
     });
-  }
-
-  getById(id: number): Observable<RootModel> {
-    let url: string = `${environment.apiUrl}/api/HrPositions/${id}`;
-    return this.http.get<RootModel>(url);
   }
 
   update(id: number, model: PositionModel): Observable<RootModel> {

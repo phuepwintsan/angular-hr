@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RootModel } from '../models/root.model';
 import { environment } from '../../../environments/environment';
-import { CompanyModel } from '../models/company.model';
+import { ViCompanyModel } from '../models/company.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,12 @@ export class CompanyService {
     return this.http.get<RootModel>(url);
   }
 
-  create(model: CompanyModel): Observable<RootModel> {
+  getByCId(companyId: string): Observable<RootModel> {
+    let url: string = `${environment.apiUrl}/api/HrCompanies/by-companyid?id=${companyId}`;
+    return this.http.get<RootModel>(url);
+  }
+
+  create(model: ViCompanyModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrCompanies`;
     return this.http.post<RootModel>(url, JSON.stringify(model), {
       headers: {
@@ -30,7 +35,7 @@ export class CompanyService {
     return this.http.get<RootModel>(url);
   }
 
-  update(id: string, model: CompanyModel): Observable<RootModel> {
+  update(id: string, model: ViCompanyModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrCompanies/${id}`;
     return this.http.put<RootModel>(url, JSON.stringify(model), {
       headers: {

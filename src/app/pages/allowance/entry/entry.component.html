@@ -8,23 +8,18 @@
       </div>
       <div class="col-span-6 flex flex-col gap-2">
         <label>Company Id</label>
-        <p-button
-          (click)="showDialog()"
-          pInputText
-          formControlName="companyId"
-          type="text"
-        />
-        <p-dialog
-          [(visible)]="visible"
-          [modal]="true"
-          [style]="{ width: '25rem' }"
-          ><ng-template #header> </ng-template>
-          <img
-            src="favicon.ico"
-            alt="heart Image"
-            style="width: 100%; border-radius: 20px"
+
+        <div class="card flex w-full">
+          <p-select
+            [options]="companies"
+            [(ngModel)]="selectedCompany"
+            optionLabel="companyName"
+            (onChange)="onCompanyChange()"
+            placeholder="Select a City"
+            class="w-full"
+            [ngModelOptions]="{ standalone: true }"
           />
-        </p-dialog>
+        </div>
 
         <small
           *ngIf="
@@ -33,12 +28,23 @@
           "
           class="p-text"
         >
-          Branch Is Required.
+          Company Is Required.
         </small>
       </div>
       <div class="col-span-12 flex flex-col gap-2">
         <label>Branch Id</label>
-        <input pInputText formControlName="branchId" type="number" />
+        <div class="card flex w-full">
+          <p-select
+            [options]="branches"
+            [(ngModel)]="selectedBranch"
+            (onChange)="onBranchChange()"
+            optionLabel="branchName"
+            placeholder="Select a Name"
+            class="w-full"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+
         <small
           *ngIf="
             allowanceForm.controls['branchId'].invalid &&

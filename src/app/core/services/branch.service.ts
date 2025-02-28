@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RootModel } from '../models/root.model';
 import { environment } from '../../../environments/environment';
-import { BranchModel } from '../models/branch.model';
+import { ViBranchModel } from '../models/branch.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class BranchService {
     return this.http.get<RootModel>(url);
   }
 
-  create(model: BranchModel): Observable<RootModel> {
+  create(model: ViBranchModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrBranches`;
     return this.http.post<RootModel>(url, JSON.stringify(model), {
       headers: {
@@ -25,12 +25,17 @@ export class BranchService {
     });
   }
 
-  getById(id: number): Observable<RootModel> {
-    let url: string = `${environment.apiUrl}/api/HrBranches/${id}`;
+  getByBid(branchId: number): Observable<RootModel> {
+    let url: string = `${environment.apiUrl}/api/HrBranches/by-branchid?id={branchId}`;
     return this.http.get<RootModel>(url);
   }
 
-  update(id: number, model: BranchModel): Observable<RootModel> {
+  getByCid(companyId: string): Observable<RootModel> {
+    let url: string = `${environment.apiUrl}/api/HrBranches/by-companyId?companyId=${companyId}`;
+    return this.http.get<RootModel>(url);
+  }
+
+  update(id: number, model: ViBranchModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrBranches`;
     return this.http.put<RootModel>(url, JSON.stringify(model), {
       headers: {

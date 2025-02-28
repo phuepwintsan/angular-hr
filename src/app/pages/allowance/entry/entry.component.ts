@@ -10,6 +10,7 @@ import {
   ReactiveFormsModule,
   Validators,
   FormGroup,
+  UntypedFormBuilder,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -20,8 +21,12 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
 import { Editor } from 'primeng/editor';
-import { Dialog } from 'primeng/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SelectModule } from 'primeng/select';
+import { ViCompanyModel } from '../../../core/models/company.model';
+import { CompanyService } from '../../../core/services/company.service';
+import { BranchService } from '../../../core/services/branch.service';
+import { ViBranchModel } from '../../../core/models/branch.model';
 
 @Component({
   selector: 'app-entry',
@@ -37,7 +42,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     ToggleSwitch,
     ProgressSpinnerModule,
     Editor,
-    Dialog,
+    SelectModule,
   ],
   providers: [
     DatePipe,
@@ -55,6 +60,11 @@ export class EntryComponent implements OnInit {
   checked: boolean = false;
   loading: boolean = false;
   visible: boolean = false;
+  companies: ViCompanyModel[] = [];
+  selectedCompany!: ViCompanyModel;
+  branches: ViBranchModel[] = [];
+  selectedBranch!: ViBranchModel;
+
   // formGroup: FormGroup | undefined;
   showDialog() {
     this.visible = true;
@@ -65,7 +75,8 @@ export class EntryComponent implements OnInit {
     private datepipe: DatePipe,
     private messageService: MessageService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private companyService: CompanyService,
+    private branchService: BranchService
   ) {}
 
   private formBuilder = inject(FormBuilder);
@@ -88,13 +99,16 @@ export class EntryComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.getCompanies();
+
+    console.log('companies' + this.companies);
+
     this.allowanceId = parseInt(this.route.snapshot.paramMap.get('id') ?? '');
     if (this.allowanceId > 0) {
       this.isEdit = true;
       this.loading = true;
-      // this.formGroup = new FormGroup({
-      //   text: new FormControl(),
-      // });
+
+      console.log(this.model);
       this.allowanceService.getById(this.allowanceId).subscribe((res) => {
         this.model = res.data as AllowanceModel;
         console.log(this.model);
@@ -103,9 +117,7 @@ export class EntryComponent implements OnInit {
           this.model.allowanceId
         );
         this.allowanceForm.controls.allowanceId.disable();
-        this.allowanceForm.controls.companyId.setValue(this.model.companyId);
         this.allowanceForm.controls.branchId.setValue(this.model.branchId);
-        this.allowanceForm.controls.companyId.setValue(this.model.companyId);
         this.allowanceForm.controls.deptId.setValue(this.model.deptId);
         this.allowanceForm.controls.positionId.setValue(this.model.positionId);
         this.allowanceForm.controls.allowanceName.setValue(
@@ -138,9 +150,57 @@ export class EntryComponent implements OnInit {
         this.allowanceForm.controls.deletedBy.setValue(this.model.deletedBy);
         this.allowanceForm.controls.remark.setValue(this.model.remark);
       });
+    } else {
+      this.onCompanyChange();
     }
   }
 
+  onCompanyChange(): void {
+    if (this.selectedCompany !== undefined && this.selectedCompany !== null) {
+      this.allowanceForm.controls.companyId.setValue(
+        this.selectedCompany.companyId
+      );
+      this.getBranches(this.selectedCompany.companyId);
+    }
+  }
+
+  onBranchChange(): void {
+    if (this.selectedBranch !== undefined && this.selectedBranch !== null) {
+      this.allowanceForm.controls.branchId.setValue(
+        this.selectedBranch.branchId
+      );
+    }
+  }
+
+  getCompanies(): void {
+    this.companyService.get().subscribe({
+      next: (res) => {
+        this.companies = res.data;
+        if (this.isEdit) {
+          this.selectedCompany = this.companies.filter(
+            (x) => x.companyId == this.model.companyId
+          )[0];
+          this.onCompanyChange();
+        }
+      },
+      error: () => {},
+    });
+  }
+
+  getBranches(companyid: string): void {
+    this.branchService.getByCid(companyid).subscribe({
+      next: (res) => {
+        this.branches = res.data;
+        if (this.isEdit) {
+          this.selectedBranch = this.branches.filter(
+            (x) => x.branchId == this.model.branchId
+          )[0];
+          this.onBranchChange();
+        }
+      },
+      error: () => {},
+    });
+  }
   submit(): void {
     console.log('Form Submitted:', this.allowanceForm.value);
     if (this.allowanceForm.valid) {
@@ -213,12 +273,6 @@ export class EntryComponent implements OnInit {
           },
         });
       } else {
-        // model.updatedOn = this.datepipe.transform(
-        //   new Date(),
-        //   'yyyy-MM-ddTHH:mm:ss'
-        // );
-        // model.updatedBy = 'Admin'; if you want to assign in vs code
-
         this.allowanceService.update(this.allowanceId, model).subscribe({
           next: (res) => {
             console.log('API Response:', res);
@@ -232,9 +286,7 @@ export class EntryComponent implements OnInit {
                 detail: res.message.toString(),
               });
               this.loading = false;
-              setTimeout(() => {
-                this.router.navigate(['/allowance']);
-              }, 2000);
+              this.router.navigate(['/allowance']);
             }
           },
           error: (err) => {
