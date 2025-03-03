@@ -27,6 +27,10 @@ import { ViCompanyModel } from '../../../core/models/company.model';
 import { CompanyService } from '../../../core/services/company.service';
 import { BranchService } from '../../../core/services/branch.service';
 import { ViBranchModel } from '../../../core/models/branch.model';
+import { DepartmentService } from '../../../core/services/department.service';
+import { ViDepartmentModel } from '../../../core/models/department.model';
+import { PositionService } from '../../../core/services/position.service';
+import { ViPositionModel } from '../../../core/models/position.model';
 
 @Component({
   selector: 'app-entry',
@@ -64,6 +68,10 @@ export class EntryComponent implements OnInit {
   selectedCompany!: ViCompanyModel;
   branches: ViBranchModel[] = [];
   selectedBranch!: ViBranchModel;
+  departments: ViDepartmentModel[] = [];
+  selectedDepartments!: ViDepartmentModel;
+  positions: ViPositionModel[] = [];
+  selectedPosition!: ViPositionModel;
 
   // formGroup: FormGroup | undefined;
   showDialog() {
@@ -76,7 +84,9 @@ export class EntryComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private companyService: CompanyService,
-    private branchService: BranchService
+    private branchService: BranchService,
+    private departmentService: DepartmentService,
+    private positionService: PositionService
   ) {}
 
   private formBuilder = inject(FormBuilder);
@@ -108,7 +118,6 @@ export class EntryComponent implements OnInit {
       this.isEdit = true;
       this.loading = true;
 
-      console.log(this.model);
       this.allowanceService.getById(this.allowanceId).subscribe((res) => {
         this.model = res.data as AllowanceModel;
         console.log(this.model);
@@ -155,23 +164,6 @@ export class EntryComponent implements OnInit {
     }
   }
 
-  onCompanyChange(): void {
-    if (this.selectedCompany !== undefined && this.selectedCompany !== null) {
-      this.allowanceForm.controls.companyId.setValue(
-        this.selectedCompany.companyId
-      );
-      this.getBranches(this.selectedCompany.companyId);
-    }
-  }
-
-  onBranchChange(): void {
-    if (this.selectedBranch !== undefined && this.selectedBranch !== null) {
-      this.allowanceForm.controls.branchId.setValue(
-        this.selectedBranch.branchId
-      );
-    }
-  }
-
   getCompanies(): void {
     this.companyService.get().subscribe({
       next: (res) => {
@@ -201,6 +193,89 @@ export class EntryComponent implements OnInit {
       error: () => {},
     });
   }
+
+  getDepartment(companyId: string, branchId: number): void {
+    this.departmentService.getByCBid(companyId, branchId).subscribe({
+      next: (res) => {
+        this.departments = res.data;
+        if (this.isEdit) {
+          this.selectedDepartments = this.departments.filter(
+            (x) => x.deptId == this.model.deptId
+          )[0];
+          this.onDepartmentChange();
+        }
+      },
+      error: () => {},
+    });
+  }
+
+  getPositions(
+    companyId: string,
+    branchId: number,
+    departmentId: number
+  ): void {
+    this.positionService
+      .getByCBDid(companyId, branchId, departmentId)
+      .subscribe({
+        next: (res) => {
+          this.positions = res.data;
+          if (this.isEdit) {
+            this.selectedPosition = this.positions.filter(
+              (x) => x.positionId == this.model.positionId
+            )[0];
+
+            this.onPositionChange();
+          }
+        },
+      });
+  }
+
+  onCompanyChange(): void {
+    if (this.selectedCompany !== undefined && this.selectedCompany !== null) {
+      this.allowanceForm.controls.companyId.setValue(
+        this.selectedCompany.companyId
+      );
+      this.getBranches(this.selectedCompany.companyId);
+    }
+  }
+
+  onBranchChange(): void {
+    if (this.selectedBranch !== undefined && this.selectedBranch !== null) {
+      this.allowanceForm.controls.branchId.setValue(
+        this.selectedBranch.branchId
+      );
+      this.getDepartment(
+        this.selectedCompany.companyId,
+        this.selectedBranch.branchId
+      );
+    }
+  }
+
+  onPositionChange(): void {
+    if (this.selectedPosition != undefined && this.selectedPosition != null) {
+      this.allowanceForm.controls.positionId.setValue(
+        this.selectedPosition.positionId
+      );
+    }
+  }
+
+  onDepartmentChange(): void {
+    if (
+      this.selectedDepartments != undefined &&
+      this.selectedDepartments != null
+    ) {
+      this.allowanceForm.controls.deptId.setValue(
+        this.selectedDepartments.deptId
+      );
+
+      this.getPositions(
+        this.selectedCompany.companyId,
+        this.selectedBranch.branchId,
+        this.selectedDepartments.deptId
+      );
+    }
+  }
+
   submit(): void {
     console.log('Form Submitted:', this.allowanceForm.value);
     if (this.allowanceForm.valid) {

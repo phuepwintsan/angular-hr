@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, ObservedValueOf, Observer } from 'rxjs';
 import { RootModel } from '../models/root.model';
 import { environment } from '../../../environments/environment';
-import { PositionModel } from '../models/position.model';
+import { ViPositionModel } from '../models/position.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +17,11 @@ export class PositionService {
   }
 
   getByCBDid(
-    companyId: string,
-    branchId: number,
-    departmentId: number
+    companyid: string,
+    branchid: number,
+    deptId: number
   ): Observable<RootModel> {
-    let url: string = `${environment.apiUrl}/api/HrPositions/by-CBDid?companyid=${companyId}?branchid=${branchId}&deptId=${departmentId}`;
+    let url: string = `${environment.apiUrl}/api/HrPositions/by-CBDid?companyid=${companyid}&branchid=${branchid}&deptId=${deptId}`;
     return this.http.get<RootModel>(url);
   }
 
@@ -30,7 +30,7 @@ export class PositionService {
     return this.http.get<RootModel>(url);
   }
 
-  create(model: PositionModel): Observable<RootModel> {
+  create(model: ViPositionModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrPositions`;
     return this.http.post<RootModel>(url, JSON.stringify(model), {
       headers: {
@@ -39,7 +39,7 @@ export class PositionService {
     });
   }
 
-  update(id: number, model: PositionModel): Observable<RootModel> {
+  update(id: number, model: ViPositionModel): Observable<RootModel> {
     let url: string = `${environment.apiUrl}/api/HrPositions/${id}`;
     return this.http.put<RootModel>(url, JSON.stringify(model), {
       headers: {
