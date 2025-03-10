@@ -58,7 +58,7 @@ export const routes: Routes = [
     path: 'job-opening',
     children: [
       { path: '', component: JobOpeningComponent },
-      { path: '', component: LoadingComponent },
+      { path: 'home', component: HomeComponent },
       { path: 'loading', component: LoadingComponent },
       { path: 'entry/:id', component: JobOpeningEntryComponent },
       { path: 'entry', component: JobOpeningEntryComponent },

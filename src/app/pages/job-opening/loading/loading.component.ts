@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Skeleton } from 'primeng/skeleton';
+import { ProgressBar } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-loading',
-  imports: [Skeleton],
+  imports: [Skeleton, ProgressBar],
   standalone: true,
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.scss',

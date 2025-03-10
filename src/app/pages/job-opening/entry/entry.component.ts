@@ -205,7 +205,6 @@ export class EntryComponent {
             (x) => x.companyId == this.model.companyId
           )[0];
           this.onCompanyChange();
-          this.onBranchChange();
         }
       },
       error: () => {},
@@ -223,7 +222,6 @@ export class EntryComponent {
             (x) => x.branchId == this.model.branchId
           )[0];
           this.onBranchChange();
-          this.onCompanyChange();
         }
       },
       error: () => {},
@@ -274,6 +272,13 @@ export class EntryComponent {
   //#region onCompanyChange
   onCompanyChange(): void {
     if (this.selectedCompany !== undefined && this.selectedCompany !== null) {
+      this.branches = [];
+      this.departments = [];
+      this.positions = [];
+      this.selectedBranch != null;
+      this.selectedDepartments != null;
+      this.selectedPosition != null;
+
       this.jobOpensForm.controls.companyId.setValue(
         this.selectedCompany.companyId
       );
@@ -285,6 +290,11 @@ export class EntryComponent {
   //#region onBranchChange
   onBranchChange(): void {
     if (this.selectedBranch !== undefined && this.selectedBranch !== null) {
+      this.departments = [];
+      this.selectedDepartments != null;
+      this.positions = [];
+      this.selectedPosition != null;
+
       this.jobOpensForm.controls.branchId.setValue(
         this.selectedBranch.branchId
       );
