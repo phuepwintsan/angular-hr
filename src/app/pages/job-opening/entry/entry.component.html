@@ -1,0 +1,217 @@
+<p-toast key="globalMessage"></p-toast>
+<div class="p-4">
+  <form [formGroup]="jobOpensForm" (submit)="submit()">
+    <div class="grid grid-cols-12 gap-2">
+      <!-- #region Job Opening Id -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>Job Opening Id</label>
+        <input pInputText formControlName="id" type="number" />
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Job Opening title -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>Title</label>
+        <input pInputText formControlName="title" type="string" />
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Job Opening Description -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>Description</label>
+        <input pInputText formControlName="description" type="string" />
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Job Opening Applicants -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>No of Applicants</label>
+        <input pInputText formControlName="noOfApplicants" type="number" />
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Job Opening StartOn -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>Start On</label>
+        <p-datepicker
+          formControlName="startOn"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [minDate]="today"
+        ></p-datepicker>
+        <small
+          *ngIf="
+            jobOpensForm.controls['startOn'].invalid &&
+            jobOpensForm.get('startOn')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          Start On is Required.
+        </small>
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Job Opening EndOn -->
+      <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
+        <label>End On</label>
+        <p-datepicker
+          formControlName="endOn"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+        ></p-datepicker>
+        <small
+          *ngIf="
+            jobOpensForm.controls['endOn'].invalid &&
+            jobOpensForm.get('endOn')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          End On is Required.
+        </small>
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Company Id -->
+      <div class="col-span-6 flex flex-col gap-2">
+        <label>Company Id</label>
+        <p-select
+          [options]="companies"
+          [(ngModel)]="selectedCompany"
+          optionLabel="companyName"
+          (onChange)="onCompanyChange()"
+          placeholder="Select a City"
+          class="w-full"
+          [ngModelOptions]="{ standalone: true }"
+          [ngClass]="{
+            'ng-dirty ng-invalid':
+              jobOpensForm.controls['companyId'].invalid &&
+              jobOpensForm.get('companyId')?.dirty
+          }"
+        />
+        <small
+          *ngIf="
+            jobOpensForm.controls['companyId'].invalid &&
+            jobOpensForm.get('companyId')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          Company Is Required.
+        </small>
+      </div>
+      <!-- #endregion Company Id -->
+
+      <!-- #region Branch ID -->
+      <div class="col-span-6 flex flex-col gap-2">
+        <label>Branch Id</label>
+
+        <p-select
+          [options]="branches"
+          [(ngModel)]="selectedBranch"
+          (onChange)="onBranchChange()"
+          optionLabel="branchName"
+          placeholder="Select a Name"
+          class="w-full"
+          [ngModelOptions]="{ standalone: true }"
+          [ngClass]="{
+            'ng-dirty ng-invalid':
+              jobOpensForm.controls['branchId'].invalid &&
+              jobOpensForm.get('branchId')?.dirty
+          }"
+        />
+
+        <small
+          *ngIf="
+            jobOpensForm.controls['branchId'].invalid &&
+            jobOpensForm.get('branchId')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          Branch Is Required.
+        </small>
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region Department Id -->
+      <div class="col-span-6 flex flex-col gap-2">
+        <label>Dept Id</label>
+
+        <p-select
+          [options]="departments"
+          [(ngModel)]="selectedDepartments"
+          (onChange)="onDepartmentChange()"
+          optionLabel="deptName"
+          placeholder="Select a Name"
+          class="w-full"
+          [ngModelOptions]="{ standalone: true }"
+          [ngClass]="{
+            'ng-dirty ng-invalid':
+              jobOpensForm.controls['deptId'].invalid &&
+              jobOpensForm.get('deptId')?.dirty
+          }"
+        />
+
+        <small
+          *ngIf="
+            jobOpensForm.controls['deptId'].invalid &&
+            jobOpensForm.get('deptId')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          Dept Id Is Required.
+        </small>
+      </div>
+      <!-- #endregion  -->
+
+      <!--#region Position Id -->
+      <div class="col-span-6 flex flex-col gap-2">
+        <label>Position Id</label>
+        <p-select
+          [options]="positions"
+          [(ngModel)]="selectedPosition"
+          (onChange)="onPositionChange()"
+          optionLabel="positionName"
+          placeholder="Select a Name"
+          class="w-full"
+          [ngModelOptions]="{ standalone: true }"
+          [ngClass]="{
+            'ng-dirty ng-invalid':
+              jobOpensForm.controls['positionId'].invalid &&
+              jobOpensForm.get('positionId')?.dirty
+          }"
+        />
+        <small
+          *ngIf="
+            jobOpensForm.controls['positionId'].invalid &&
+            jobOpensForm.get('positionId')?.dirty
+          "
+          class="p-text text-red-500"
+        >
+          Position Is Required.
+        </small>
+      </div>
+      <!-- #endregion -->
+
+      <!--#region Status -->
+      <div class="col-span-12 flex flex-col gap-2">
+        <label>Status</label>
+        <p-toggleswitch formControlName="openingStatus" />
+      </div>
+      <!-- #endregion -->
+
+      <!--#region Submit -->
+      <div class="col-span-12">
+        <button
+          pButton
+          type="submit"
+          icon="pi pi-check"
+          [disabled]="isSubmitting"
+          [loading]="isSubmitting"
+          class="w-24"
+        >
+          Submit
+        </button>
+      </div>
+      <!-- #endregion -->
+    </div>
+  </form>
+</div>

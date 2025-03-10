@@ -31,6 +31,7 @@ import { DepartmentService } from '../../../core/services/department.service';
 import { ViDepartmentModel } from '../../../core/models/department.model';
 import { PositionService } from '../../../core/services/position.service';
 import { ViPositionModel } from '../../../core/models/position.model';
+import { RootModel } from '../../../core/models/root.model';
 
 @Component({
   selector: 'app-entry',
@@ -72,11 +73,27 @@ export class EntryComponent implements OnInit {
   selectedDepartments!: ViDepartmentModel;
   positions: ViPositionModel[] = [];
   selectedPosition!: ViPositionModel;
+  errormessage!: RootModel[];
 
-  // formGroup: FormGroup | undefined;
-  showDialog() {
-    this.visible = true;
-  }
+  private formBuilder = inject(FormBuilder);
+  allowanceForm = this.formBuilder.group({
+    allowanceId: [0],
+    companyId: ['', Validators.required],
+    branchId: [0, Validators.required],
+    deptId: [0, Validators.required],
+    positionId: [0, Validators.required],
+    allowanceName: ['', Validators.required],
+    description: [''],
+    status: [true],
+    createdOn: [''],
+    createdBy: [''],
+    updatedOn: [''],
+    updatedBy: [''],
+    deletedOn: [''],
+    deletedBy: [''],
+    remark: [''],
+  });
+
   constructor(
     private allowanceService: AllowanceService,
     private route: ActivatedRoute,
@@ -88,25 +105,6 @@ export class EntryComponent implements OnInit {
     private departmentService: DepartmentService,
     private positionService: PositionService
   ) {}
-
-  private formBuilder = inject(FormBuilder);
-  allowanceForm = this.formBuilder.group({
-    allowanceId: [0, Validators.required],
-    companyId: ['', Validators.required],
-    branchId: [0, Validators.required],
-    deptId: [0, Validators.required],
-    positionId: [0, Validators.required],
-    allowanceName: [''],
-    description: [''],
-    status: [true],
-    createdOn: [''],
-    createdBy: [''],
-    updatedOn: [''],
-    updatedBy: [''],
-    deletedOn: [''],
-    deletedBy: [''],
-    remark: [''],
-  });
 
   ngOnInit(): void {
     this.getCompanies();
@@ -161,6 +159,11 @@ export class EntryComponent implements OnInit {
       });
     } else {
       this.onCompanyChange();
+    }
+
+    if (!this.isEdit) {
+      this.allowanceForm.reset();
+      this.allowanceForm.controls.allowanceId.setValue(0);
     }
   }
 
@@ -334,9 +337,7 @@ export class EntryComponent implements OnInit {
                 detail: res.message.toString(),
               });
               this.loading = false;
-              setTimeout(() => {
-                this.router.navigate(['/allowance']);
-              }, 2000);
+              this.router.navigate(['/allowance']);
             }
           },
           error: (err) => {
@@ -376,5 +377,9 @@ export class EntryComponent implements OnInit {
         control?.markAsDirty({ onlySelf: true });
       });
     }
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 }

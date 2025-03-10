@@ -1,11 +1,11 @@
 <p-toast key="globalMessage"></p-toast>
 <div class="p-4">
-  <form [formGroup]="allowanceForm" (submit)="submit()">
+  <form [formGroup]="deductionForm" (submit)="submit()">
     <div class="grid grid-cols-12 gap-2">
       <!-- #region Allowance Id -->
       <div class="xl:col-span-6 col-span-12 flex flex-col gap-2">
-        <label>Allowance Id</label>
-        <input pInputText formControlName="allowanceId" type="number" />
+        <label>Deduction Id</label>
+        <input pInputText formControlName="deductionId" type="number" />
       </div>
       <!-- #endregion -->
 
@@ -16,20 +16,21 @@
           [options]="companies"
           [(ngModel)]="selectedCompany"
           optionLabel="companyName"
-          (onChange)="onCompanyChange()"
           placeholder="Select a City"
+          (onChange)="onCompanyChange()"
           class="w-full"
           [ngModelOptions]="{ standalone: true }"
           [ngClass]="{
             'ng-dirty ng-invalid':
-              allowanceForm.controls['companyId'].invalid &&
-              allowanceForm.get('companyId')?.dirty
+              deductionForm.controls['companyId'].invalid &&
+              deductionForm.get('companyId')?.dirty
           }"
         />
+
         <small
           *ngIf="
-            allowanceForm.controls['companyId'].invalid &&
-            allowanceForm.get('companyId')?.dirty
+            deductionForm.controls['companyId'].invalid &&
+            deductionForm.get('companyId')?.dirty
           "
           class="p-text"
         >
@@ -44,22 +45,22 @@
         <p-select
           [options]="branches"
           [(ngModel)]="selectedBranch"
-          (onChange)="onBranchChange()"
           optionLabel="branchName"
           placeholder="Select a Name"
+          (onChange)="onBranchChange()"
           class="w-full"
           [ngModelOptions]="{ standalone: true }"
           [ngClass]="{
             'ng-dirty ng-invalid':
-              allowanceForm.controls['branchId'].invalid &&
-              allowanceForm.get('branchId')?.dirty
+              deductionForm.controls['branchId'].invalid &&
+              deductionForm.get('branchId')?.dirty
           }"
         />
 
         <small
           *ngIf="
-            allowanceForm.controls['branchId'].invalid &&
-            allowanceForm.get('branchId')?.dirty
+            deductionForm.controls['branchId'].invalid &&
+            deductionForm.get('branchId')?.dirty
           "
           class="p-text text-red-500"
         >
@@ -73,22 +74,22 @@
         <p-select
           [options]="departments"
           [(ngModel)]="selectedDepartments"
-          (onChange)="onDepartmentChange()"
           optionLabel="deptName"
           placeholder="Select a Name"
+          (onChange)="onDepartmentChange()"
           class="w-full"
           [ngModelOptions]="{ standalone: true }"
           [ngClass]="{
             'ng-dirty ng-invalid':
-              allowanceForm.controls['deptId'].invalid &&
-              allowanceForm.get('deptId')?.dirty
+              deductionForm.controls['deptId'].invalid &&
+              deductionForm.get('deptId')?.dirty
           }"
         />
 
         <small
           *ngIf="
-            allowanceForm.controls['deptId'].invalid &&
-            allowanceForm.get('deptId')?.dirty
+            deductionForm.controls['deptId'].invalid &&
+            deductionForm.get('deptId')?.dirty
           "
           class="p-text text-red-500"
         >
@@ -96,54 +97,20 @@
         </small>
       </div>
 
-      <!-- Position Id -->
-      <div class="col-span-6 flex flex-col gap-2">
-        <label>Position Id</label>
-        <p-select
-          [options]="positions"
-          [(ngModel)]="selectedPosition"
-          (onChange)="onPositionChange()"
-          optionLabel="positionName"
-          placeholder="Select a Name"
-          class="w-full"
-          [ngModelOptions]="{ standalone: true }"
-          [ngClass]="{
-            'ng-dirty ng-invalid':
-              allowanceForm.controls['positionId'].invalid &&
-              allowanceForm.get('positionId')?.dirty
-          }"
-        />
-        <small
-          *ngIf="
-            allowanceForm.controls['positionId'].invalid &&
-            allowanceForm.get('positionId')?.dirty
-          "
-          class="p-text text-red-500"
-        >
-          Position Is Required.
-        </small>
-      </div>
-
       <!-- Allowance Name -->
       <div class="col-span-6 flex flex-col gap-2">
-        <label>Allowance Name</label>
-        <input pInputText formControlName="allowanceName" type="text" />
+        <label>Deduction Name</label>
+        <input pInputText formControlName="deductionName" type="text" />
         <small
           *ngIf="
-            allowanceForm.controls['allowanceName'].invalid &&
-            allowanceForm.get('allowanceName')?.dirty
+            deductionForm.controls['deductionName'].invalid &&
+            deductionForm.get('deductionName')?.dirty
           "
           class="p-text text-red-500"
         >
-          Allowance Name is Required.
+          deduction Name is Required.
         </small>
       </div>
-
-      <!-- Description -->
-      <!-- <div class="col-span-12 flex flex-col gap-2">
-        <label>Description</label>
-        <p-editor formControlName="description" [style]="{ height: '320px' }" />
-      </div> -->
 
       <!-- Status -->
       <div class="col-span-12 flex flex-col gap-2">
@@ -158,7 +125,6 @@
           type="submit"
           icon="pi pi-check"
           [disabled]="isSubmitting"
-          [loading]="isSubmitting"
           class="w-24"
         >
           Submit

@@ -18,7 +18,6 @@ import { FormBuilder, Validators } from '@angular/forms';
   selector: 'app-allowance',
   imports: [
     RouterModule,
-    TableModule,
     ButtonModule,
     IconFieldModule,
     InputIconModule,
@@ -26,7 +25,6 @@ import { FormBuilder, Validators } from '@angular/forms';
     ButtonModule,
     CommonModule,
     TagModule,
-    TableModule,
     CommonModule,
     CardModule,
     TagModule,
