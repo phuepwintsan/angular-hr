@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+// import { HomeComponent } from './pages/home/home.component';
 import { StateComponent } from './pages/state/state.component';
 import { EntryComponent } from './pages/state/entry/entry.component';
 import { Component } from '@angular/core';
@@ -12,11 +12,11 @@ import { DeductionComponent } from './pages/deduction/deduction.component';
 import { EntryComponent as DeductionEntryComponent } from './pages/deduction/entry/entry.component';
 import { JobOpeningComponent } from './pages/job-opening/job-opening.component';
 import { EntryComponent as JobOpeningEntryComponent } from './pages/job-opening/entry/entry.component';
-import { LoadingComponent } from './pages/job-opening/loading/loading.component';
+import { HomeComponent } from './pages/job-opening/home/home.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  // { path: '', component: HomeComponent, pathMatch: 'full' },
+  // { path: 'home', component: HomeComponent },
   { path: 'department', component: DepartmentComponent },
   {
     path: 'state',
@@ -59,7 +59,6 @@ export const routes: Routes = [
     children: [
       { path: '', component: JobOpeningComponent },
       { path: 'home', component: HomeComponent },
-      { path: 'loading', component: LoadingComponent },
       { path: 'entry/:id', component: JobOpeningEntryComponent },
       { path: 'entry', component: JobOpeningEntryComponent },
       { path: 'job-opening/entry', component: JobOpeningEntryComponent },

@@ -9,6 +9,9 @@
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[5, 10, 20]"
+      selectionMode="single"
+      [(selection)]="selectedJobOpens"
+      dataKey="id"
       [globalFilterFields]="[
         'id',
         'title',
@@ -25,28 +28,59 @@
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template #caption>
-        <div class="flex justify-between">
-          <p-button label="Create" routerLink="loading"
-            ><i class="pi pi-plus"></i
-          ></p-button>
-          <p-iconfield
-            icon="pi pi-check"
-            iconPosition="left"
-            class="w-80 mt-2 sm:mt-0"
-          >
+        <div class="flex">
+          <p-splitbutton
+            label="Create"
+            icon="pi pi-plus"
+            [model]="items"
+            (onClick)="create()"
+          />
+          <p-iconfield iconPosition="left" class="ml-auto">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
             <input
               pInputText
               type="text"
               (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
               placeholder="Search keyword"
-              class="p-inputtext w-full border rounded-lg px-3 py-4"
+              class="flex flex-"
             />
           </p-iconfield>
         </div>
       </ng-template>
 
+      <!-- <ng-template #caption>
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-3"
+        >
+          <p-button
+            icon="pi pi-plus"
+            label="Create"
+            routerLink="entry"
+            class="w-full sm:w-auto p-button-primary"
+            [rounded]="true"
+            [outlined]="true"
+          />
+
+          <div class="relative w-full sm:w-80 border rounded-lg">
+            <i
+              class="pi pi-search absolute inset-y-4 start-0 flex items-center ps-3 text-gray-500"
+            ></i>
+            <input
+              type="search"
+              id="default-search"
+              class="block w-full p-4 ps-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </div>
+        </div>
+      </ng-template> -->
+
       <ng-template #header>
         <tr style="white-space: nowrap">
+          <th>#</th>
           <th pSortableColumn="id">JobOpening Id<p-sortIcon field="id" /></th>
           <th pSortableColumn="title">Title<p-sortIcon field="title" /></th>
           <th pSortableColumn="description">
@@ -185,7 +219,13 @@
       </ng-template>
 
       <ng-template #body let-jobOpen>
-        <tr>
+        <tr [pSelectableRow]="jobOpen">
+          <td>
+            <span
+              class="pi pi-circle"
+              [class.pi-check-circle]="selectedJobOpens === jobOpen"
+            ></span>
+          </td>
           <td>{{ jobOpen.id }}</td>
           <td>{{ jobOpen.title }}</td>
           <td>{{ jobOpen.description }}</td>

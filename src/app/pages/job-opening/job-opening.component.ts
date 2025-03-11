@@ -11,6 +11,11 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { TagModule } from 'primeng/tag';
 import { JobOpeningService } from '../../core/services/job-opening.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SplitButton } from 'primeng/splitbutton';
+import { ToastModule } from 'primeng/toast';
+import { MenuItem } from 'primeng/api';
+import { InputIconModule } from 'primeng/inputicon';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-job-opening',
@@ -24,6 +29,10 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     IconFieldModule,
     ButtonModule,
     TagModule,
+    SplitButton,
+    ToastModule,
+    InputIconModule,
+    SplitButtonModule,
   ],
   templateUrl: './job-opening.component.html',
   styleUrl: './job-opening.component.scss',
@@ -31,11 +40,29 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 export class JobOpeningComponent implements OnInit {
   jobopens: ViJobOpeningModel[] = [];
   selectedJobOpens!: JobOpeningModel;
+  items!: MenuItem[];
 
   constructor(
     private jobOpenService: JobOpeningService,
     private route: Router
-  ) {}
+  ) {
+    this.items = [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.update(this.selectedJobOpens),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => this.delete(this.selectedJobOpens),
+      },
+    ];
+  }
+
+  create(): void {
+    this.route.navigate(['job-opening/entry']);
+  }
 
   ngOnInit(): void {
     this.loadData();
