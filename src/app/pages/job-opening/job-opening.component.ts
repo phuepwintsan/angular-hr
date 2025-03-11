@@ -13,9 +13,10 @@ import { JobOpeningService } from '../../core/services/job-opening.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SplitButton } from 'primeng/splitbutton';
 import { ToastModule } from 'primeng/toast';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { InputIconModule } from 'primeng/inputicon';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-job-opening',
@@ -33,7 +34,10 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     ToastModule,
     InputIconModule,
     SplitButtonModule,
+    ConfirmDialogModule,
+    ConfirmDialog,
   ],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './job-opening.component.html',
   styleUrl: './job-opening.component.scss',
 })
@@ -44,7 +48,9 @@ export class JobOpeningComponent implements OnInit {
 
   constructor(
     private jobOpenService: JobOpeningService,
-    private route: Router
+    private route: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     this.items = [
       {
@@ -86,6 +92,42 @@ export class JobOpeningComponent implements OnInit {
         this.loadData();
       });
     }
+  }
+
+  confirm2(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Confirm Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.delete(this.selectedJobOpens);
+
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
 
   getSeverity(status: boolean) {

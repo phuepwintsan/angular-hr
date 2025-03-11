@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+<p-confirmdialog></p-confirmdialog>
 <div class="card">
   <p-card>
     <p-table
@@ -253,9 +255,13 @@
             <p-button (onClick)="update(jobOpen)"
               ><i class="pi pi-user-edit"></i>Edit</p-button
             >
-            <p-button (onClick)="delete(jobOpen)"
-              ><i class="pi pi-times"></i>Delete</p-button
-            >
+            <p-button
+              (click)="confirm2($event)"
+              label="Delete"
+              severity="danger"
+              [outlined]="true"
+              icon="pi pi-times"
+            />
           </td>
         </tr>
       </ng-template>
