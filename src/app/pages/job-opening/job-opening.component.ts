@@ -64,7 +64,7 @@ export class JobOpeningComponent implements OnInit {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => this.delete(this.selectedJobOpens),
+        command: () => this.confirm2(),
       },
       {
         label: 'Excel',
