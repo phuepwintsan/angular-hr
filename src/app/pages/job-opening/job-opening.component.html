@@ -30,39 +30,14 @@
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template #caption>
-        <div class="flex">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-3"
+        >
           <p-splitbutton
             label="Create"
             icon="pi pi-plus"
             [model]="items"
             (onClick)="create()"
-          />
-          <p-iconfield iconPosition="left" class="ml-auto">
-            <p-inputicon>
-              <i class="pi pi-search"></i>
-            </p-inputicon>
-            <input
-              pInputText
-              type="text"
-              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
-              placeholder="Search keyword"
-              class="flex flex-"
-            />
-          </p-iconfield>
-        </div>
-      </ng-template>
-
-      <!-- <ng-template #caption>
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-3"
-        >
-          <p-button
-            icon="pi pi-plus"
-            label="Create"
-            routerLink="entry"
-            class="w-full sm:w-auto p-button-primary"
-            [rounded]="true"
-            [outlined]="true"
           />
 
           <div class="relative w-full sm:w-80 border rounded-lg">
@@ -78,7 +53,7 @@
             />
           </div>
         </div>
-      </ng-template> -->
+      </ng-template>
 
       <ng-template #header>
         <tr style="white-space: nowrap">

@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RootModel } from '../models/root.model';
 import { environment } from '../../../environments/environment';
 import { RippleDesignTokens } from '@primeng/themes/types/ripple';
 import { JobOpeningModel } from '../models/job-opening.model';
+import { Nullable } from 'primeng/ts-helpers';
 
 @Injectable({
   providedIn: 'root',

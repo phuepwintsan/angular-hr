@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import {
   JobOpeningModel,
   ViJobOpeningModel,
@@ -17,6 +17,7 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { InputIconModule } from 'primeng/inputicon';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ExcelService } from '../../core/services/excel.service';
 
 @Component({
   selector: 'app-job-opening',
@@ -42,6 +43,7 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
   styleUrl: './job-opening.component.scss',
 })
 export class JobOpeningComponent implements OnInit {
+  @ViewChild(Table) tblJobOpening!: Table;
   jobopens: ViJobOpeningModel[] = [];
   selectedJobOpens!: JobOpeningModel;
   items!: MenuItem[];
@@ -50,7 +52,8 @@ export class JobOpeningComponent implements OnInit {
     private jobOpenService: JobOpeningService,
     private route: Router,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private excelService: ExcelService
   ) {
     this.items = [
       {
@@ -63,11 +66,12 @@ export class JobOpeningComponent implements OnInit {
         icon: 'pi pi-trash',
         command: () => this.delete(this.selectedJobOpens),
       },
+      {
+        label: 'Excel',
+        icon: 'pi pi-file-excel',
+        command: () => this.excel(),
+      },
     ];
-  }
-
-  create(): void {
-    this.route.navigate(['job-opening/entry']);
   }
 
   ngOnInit(): void {
@@ -78,6 +82,10 @@ export class JobOpeningComponent implements OnInit {
     this.jobOpenService.get().subscribe((res) => {
       this.jobopens = res.data as ViJobOpeningModel[];
     });
+  }
+
+  create(): void {
+    this.route.navigate(['job-opening/entry']);
   }
 
   update(jobOpen: JobOpeningModel): void {
@@ -91,12 +99,13 @@ export class JobOpeningComponent implements OnInit {
       this.jobOpenService.delete(this.selectedJobOpens.id).subscribe((res) => {
         this.loadData();
       });
+      this.confirm2();
     }
   }
 
-  confirm2(event: Event) {
+  confirm2(event?: Event) {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: event?.target as EventTarget,
       message: 'Do you want to delete this record?',
       header: 'Confirm Zone',
       icon: 'pi pi-info-circle',
@@ -128,6 +137,10 @@ export class JobOpeningComponent implements OnInit {
         });
       },
     });
+  }
+
+  excel(): void {
+    this.excelService.excel('job-opening ', this.tblJobOpening.tableViewChild);
   }
 
   getSeverity(status: boolean) {
