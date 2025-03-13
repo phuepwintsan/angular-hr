@@ -17,7 +17,8 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { InputIconModule } from 'primeng/inputicon';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ExcelService } from '../../core/services/excel.service';
+import { FieldsetModule } from 'primeng/fieldset';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   selector: 'app-job-opening',
@@ -31,12 +32,14 @@ import { ExcelService } from '../../core/services/excel.service';
     IconFieldModule,
     ButtonModule,
     TagModule,
-    SplitButton,
+    // SplitButton,
     ToastModule,
     InputIconModule,
     SplitButtonModule,
     ConfirmDialogModule,
     ConfirmDialog,
+    FieldsetModule,
+    AvatarModule,
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './job-opening.component.html',
@@ -48,12 +51,13 @@ export class JobOpeningComponent implements OnInit {
   selectedJobOpens!: JobOpeningModel;
   items!: MenuItem[];
 
+
   constructor(
     private jobOpenService: JobOpeningService,
     private route: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private excelService: ExcelService
+
   ) {
     this.items = [
       {
@@ -140,7 +144,10 @@ export class JobOpeningComponent implements OnInit {
   }
 
   excel(): void {
-    this.excelService.excel('job-opening ', this.tblJobOpening.tableViewChild);
+    this.jobOpenService.excel(
+      'job-opening ',
+      this.tblJobOpening.tableViewChild
+    );
   }
 
   getSeverity(status: boolean) {

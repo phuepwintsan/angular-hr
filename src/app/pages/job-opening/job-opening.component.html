@@ -1,109 +1,160 @@
 <p-toast></p-toast>
 <p-confirmdialog></p-confirmdialog>
-<div class="card">
-  <p-card>
-    <p-table
-      #dt1
-      sortField="id"
-      [sortOrder]="-1"
-      [value]="jobopens"
-      datakey="id"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      selectionMode="single"
-      [(selection)]="selectedJobOpens"
-      dataKey="id"
-      [globalFilterFields]="[
-        'id',
-        'title',
-        'description',
-        'noOfApplicants',
-        'startOn',
-        'endOn',
-        'companyId',
-        'branchId',
-        'deptId',
-        'positionId',
-        'openingStatus'
-      ]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template #caption>
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-3"
-        >
-          <p-splitbutton
-            label="Create"
-            icon="pi pi-plus"
-            [model]="items"
-            (onClick)="create()"
-          />
 
-          <div class="relative w-full sm:w-80 border rounded-lg">
-            <i
-              class="pi pi-search absolute inset-y-4 start-0 flex items-center ps-3 text-gray-500"
-            ></i>
-            <input
-              type="search"
-              id="default-search"
-              class="block w-full p-4 ps-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
-              placeholder="Search keyword"
-            />
-          </div>
+<html class="my-app-dark">
+  <body>
+    <div class="card">
+      <p-card>
+        <div class="flex items-center gap-3 ml-10">
+          <button title="github">
+            <a href="https://github.com/phuepwintsan">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="currentColor"
+                class="bi bi-github"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+                />
+              </svg>
+            </a>
+          </button>
+
+          <button title="discord">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="currentColor"
+              class="bi bi-discord"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"
+              />
+            </svg>
+          </button>
         </div>
-      </ng-template>
 
-      <ng-template #header>
-        <tr style="white-space: nowrap">
-          <th>#</th>
-          <th pSortableColumn="id">JobOpening Id<p-sortIcon field="id" /></th>
-          <th pSortableColumn="title">Title<p-sortIcon field="title" /></th>
-          <th pSortableColumn="description">
-            Description<p-sortIcon field="description" />
-          </th>
-          <th pSortableColumn="noOfApplicants">
-            No of Applicants<p-sortIcon field="noOfApplicants" />
-          </th>
-          <th pSortableColumn="startOn">
-            Start On<p-sortIcon field="startOn" />
-          </th>
-          <th pSortableColumn="endOn">EndOn<p-sortIcon field="endOn" /></th>
-          <th pSortableColumn="companyId">
-            Company Id<p-sortIcon field="companyId" />
-          </th>
-          <th pSortableColumn="branchId">
-            Branch Id<p-sortIcon field="branchId" />
-          </th>
-          <th pSortableColumn="deptId">Dept Id<p-sortIcon field="deptId" /></th>
-          <th pSortableColumn="positionId">
-            Position Id<p-sortIcon field="positionId" />
-          </th>
-          <th pSortableColumn="openingStatus">
-            Status<p-sortIcon field="openingStatus" />
-          </th>
-          <th pSortableColumn="createdOn">
-            Created On<p-sortIcon field="createdOn" />
-          </th>
-          <th pSortableColumn="createdBy">
-            Created By<p-sortIcon field="createdBy" />
-          </th>
-          <th pSortableColumn="updatedOn">
-            Updated On<p-sortIcon field="updatedOn" />
-          </th>
-          <th pSortableColumn="updatedBy">
-            Updated By<p-sortIcon field="updatedBy" />
-          </th>
-          <th pSortableColumn="deletedOn">
-            Deleted On<p-sortIcon field="deletedOn" />
-          </th>
-          <th pSortableColumn="deletedBy">
-            Deleted By<p-sortIcon field="deletedBy" />
-          </th>
-          <th pSortableColumn="remark">Remark<p-sortIcon field="remark" /></th>
-        </tr>
-        <!-- <tr>
+
+          <p-table
+            #dt1
+            sortField="id"
+            [sortOrder]="-1"
+            [value]="jobopens"
+            datakey="id"
+            [paginator]="true"
+            [rows]="10"
+            [rowsPerPageOptions]="[5, 10, 20]"
+            selectionMode="single"
+            scrollable="true"
+            [(selection)]="selectedJobOpens"
+            dataKey="id"
+            [globalFilterFields]="[
+              'id',
+              'title',
+              'description',
+              'noOfApplicants',
+              'startOn',
+              'endOn',
+              'companyId',
+              'branchId',
+              'deptId',
+              'positionId',
+              'openingStatus'
+            ]"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
+            <ng-template #caption>  
+              <div
+                class="flex flex-row md:flex-auto  items-center justify-between mb-3 gap-3"
+              >
+                <p-splitbutton
+                  label="Create"
+                  icon="pi pi-plus"
+                  [model]="items"
+                  (onClick)="create()"
+                />
+
+                <div class="relative w-full md:w-72 sm:w-52 border rounded-lg">
+                  <i
+                    class="pi pi-search absolute inset-y-4 start-0 flex items-center ps-3 text-gray-500"
+                  ></i>
+                  <input
+                    type="search"
+                    id="default-search"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    (input)="
+                      dt1.filterGlobal($any($event.target).value, 'contains')
+                    "
+                    placeholder="Search keyword"
+                  />
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template #header>
+              <tr style="white-space: nowrap">
+                <th>#</th>
+                <th pSortableColumn="id">
+                  JobOpening Id<p-sortIcon field="id" />
+                </th>
+                <th pSortableColumn="title">
+                  Title<p-sortIcon field="title" />
+                </th>
+                <th pSortableColumn="description">
+                  Description<p-sortIcon field="description" />
+                </th>
+                <th pSortableColumn="noOfApplicants">
+                  No of Applicants<p-sortIcon field="noOfApplicants" />
+                </th>
+                <th pSortableColumn="startOn">
+                  Start On<p-sortIcon field="startOn" />
+                </th>
+                <th pSortableColumn="endOn">
+                  EndOn<p-sortIcon field="endOn" />
+                </th>
+                <th pSortableColumn="companyId">
+                  Company Id<p-sortIcon field="companyId" />
+                </th>
+                <th pSortableColumn="branchId">
+                  Branch Id<p-sortIcon field="branchId" />
+                </th>
+                <th pSortableColumn="deptId">
+                  Dept Id<p-sortIcon field="deptId" />
+                </th>
+                <th pSortableColumn="positionId">
+                  Position Id<p-sortIcon field="positionId" />
+                </th>
+                <th pSortableColumn="openingStatus">
+                  Status<p-sortIcon field="openingStatus" />
+                </th>
+                <th pSortableColumn="createdOn">
+                  Created On<p-sortIcon field="createdOn" />
+                </th>
+                <th pSortableColumn="createdBy">
+                  Created By<p-sortIcon field="createdBy" />
+                </th>
+                <th pSortableColumn="updatedOn">
+                  Updated On<p-sortIcon field="updatedOn" />
+                </th>
+                <th pSortableColumn="updatedBy">
+                  Updated By<p-sortIcon field="updatedBy" />
+                </th>
+                <th pSortableColumn="deletedOn">
+                  Deleted On<p-sortIcon field="deletedOn" />
+                </th>
+                <th pSortableColumn="deletedBy">
+                  Deleted By<p-sortIcon field="deletedBy" />
+                </th>
+                <th pSortableColumn="remark">
+                  Remark<p-sortIcon field="remark" />
+                </th>
+              </tr>
+              <!-- <tr>
           <th>
             <p-columnFilter
               type="number"
@@ -193,59 +244,62 @@
             ></p-columnFilter>
           </th>
         </tr> -->
-      </ng-template>
+            </ng-template>
 
-      <ng-template #body let-jobOpen>
-        <tr [pSelectableRow]="jobOpen">
-          <td>
-            <span
-              class="pi pi-circle"
-              [class.pi-check-circle]="selectedJobOpens === jobOpen"
-            ></span>
-          </td>
-          <td>{{ jobOpen.id }}</td>
-          <td>{{ jobOpen.title }}</td>
-          <td>{{ jobOpen.description }}</td>
-          <td>{{ jobOpen.noOfApplicants }}</td>
-          <td>{{ jobOpen.startOn | date : "dd-mm-yyyy" }}</td>
-          <td>{{ jobOpen.endOn }}</td>
-          <td>{{ jobOpen.companyId }}</td>
-          <td>{{ jobOpen.branchId }}</td>
-          <td>{{ jobOpen.deptId }}</td>
-          <td>{{ jobOpen.positionId }}</td>
-          <td>
-            <p-tag
-              [value]="jobOpen.openingStatus"
-              [severity]="getSeverity(jobOpen.status)"
-            />
-          </td>
-          <td>{{ jobOpen.createdOn }}</td>
-          <td>{{ jobOpen.createdBy }}</td>
-          <td>{{ jobOpen.updatedOn }}</td>
-          <td>{{ jobOpen.updatedBy }}</td>
-          <td>{{ jobOpen.deletedOn }}</td>
-          <td>{{ jobOpen.deletedBy }}</td>
-          <td>{{ jobOpen.remark }}</td>
-          <td class="flex flex-row gap-2">
-            <p-button (onClick)="update(jobOpen)"
-              ><i class="pi pi-user-edit"></i>Edit</p-button
-            >
-            <p-button
-              (click)="confirm2($event)"
-              label="Delete"
-              severity="danger"
-              [outlined]="true"
-              icon="pi pi-times"
-            />
-          </td>
-        </tr>
-      </ng-template>
+            <ng-template #body let-jobOpen>
+              <tr [pSelectableRow]="jobOpen">
+                <td>
+                  <span
+                    class="pi pi-circle"
+                    [class.pi-check-circle]="selectedJobOpens === jobOpen"
+                  ></span>
+                </td>
+                <td>{{ jobOpen.id }}</td>
+                <td>{{ jobOpen.title }}</td>
+                <td>{{ jobOpen.description }}</td>
+                <td>{{ jobOpen.noOfApplicants }}</td>
+                <td>{{ jobOpen.startOn | date : "dd-mm-yyyy" }}</td>
+                <td>{{ jobOpen.endOn }}</td>
+                <td>{{ jobOpen.companyId }}</td>
+                <td>{{ jobOpen.branchId }}</td>
+                <td>{{ jobOpen.deptId }}</td>
+                <td>{{ jobOpen.positionId }}</td>
+                <td>
+                  <p-tag
+                    [value]="jobOpen.openingStatus"
+                    [severity]="getSeverity(jobOpen.status)"
+                  />
+                </td>
+                <td>{{ jobOpen.createdOn }}</td>
+                <td>{{ jobOpen.createdBy }}</td>
+                <td>{{ jobOpen.updatedOn }}</td>
+                <td>{{ jobOpen.updatedBy }}</td>
+                <td>{{ jobOpen.deletedOn }}</td>
+                <td>{{ jobOpen.deletedBy }}</td>
+                <td>{{ jobOpen.remark }}</td>
+                <td class="flex flex-row gap-2">
+                  <p-button (onClick)="update(jobOpen)"
+                    ><i class="pi pi-user-edit"></i>Edit</p-button
+                  >
+                  <p-button
+                    (click)="confirm2($event)"
+                    label="Delete"
+                    severity="danger"
+                    [outlined]="true"
+                    icon="pi pi-times"
+                  />
+                </td>
+              </tr>
+            </ng-template>
 
-      <ng-template #emptymessage>
-        <tr>
-          <td colspan="3">No Job Opening found.</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-card>
-</div>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="3">No Job Opening found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+      </p-card>
+    </div>
+  </body>
+</html>

@@ -10,3 +10,85 @@
   @tailwind components;
   @tailwind utilities;
 }
+
+.app-dark {
+  /* 🎨 Define Dark Theme Colors */
+  --surface-a: #181818 !important; /* Background */
+  --surface-b: #222222 !important; /* Headers, Panels */
+  --surface-c: #2a2a2a !important; /* Rows */
+  --surface-d: #333333 !important; /* Hover Effect */
+  --text-color: #ffffff !important; /* Text */
+  --border-color: #444444 !important; /* Borders */
+  --surface-e:  #8b65aa !important;
+
+  /* 🔹 Apply Dark Mode to General UI */
+  background-color: var(--surface-a);
+  color: var(--text-color);
+
+  /* 📌 PrimeNG DataTable */
+  .p-datatable {
+    background: var(--surface-e) !important;
+    color: var(--text-color) !important;
+  }
+
+  .p-datatable thead > tr > th,
+  div,
+  label {
+    background: var(--surface-b) !important;
+    color: var(--text-color) !important;
+  }
+
+  .p-datatable tbody > tr,
+  .p-datatable tbody > tr > td {
+    background: var(--surface-c) !important;
+    color: var(--text-color) !important;
+  }
+
+  .p-datatable tbody > tr:hover {
+    background: var(--surface-d) !important;
+  }
+
+  .p-datatable-footer,
+  .p-datatable-header {
+    background: var(--surface-b) !important;
+    color: var(--text-color) !important;
+  }
+
+  /* 🔘 PrimeNG Buttons */
+  .p-button {
+    background-color: var(--surface-b) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+  }
+
+  .p-button:hover {
+    background-color: var(--surface-d) !important;
+  }
+
+  /* 📌 PrimeNG Paginator */
+  .p-paginator {
+    background: var(--surface-a) !important;
+    color: var(--text-color) !important;
+  }
+
+  .p-paginator .p-paginator-pages {
+    background: var(--surface-b) !important;
+    color: var(--text-color) !important;
+  }
+
+  /* 🎯 Apply Dark Mode to Forms */
+  .form,
+  form,
+  input,
+  textarea,
+  p-select,
+  p-editor {
+    background-color: var(--surface-b) !important;
+    color: var(--text-color) !important;
+  }
+
+  .p-fieldset{
+    background-color: var(--surface-e) !important;
+    color: var(--surface-e) !important;
+  }
+}
